@@ -55,7 +55,6 @@ try:
             if not linea.startswith("DATA:"):
                 continue
 
-            # linea = linea.replace("DATA:", "")
             linea = linea[5:]  # más rápido que replace
 
             if linea and linea.count(",") >= 3: # Asegurarse de que hay al menos 4 partes (MAC, RSSI, Channel, SSID)
@@ -69,9 +68,6 @@ try:
                         channel = int(partes[2].strip())
                     except:
                         continue
-
-                    # rssi = int(partes[1].strip())
-                    # channel = int(partes[2].strip())
 
                     ssid = partes[3].strip()
                     ssid = ssid.replace("\n", "").replace("\r", "") # Limpiar caracteres
@@ -100,10 +96,6 @@ try:
                     veces = dispositivos_vistos[mac]
 
                     print(f"{timestamp} | {mac} | RSSI: {rssi} | Channel: {channel} | Veces: {veces} | SSID: {ssid}")
-
-                    # with open(ARCHIVO, 'a', newline='') as f:
-                        # writer = csv.writer(f)
-                        # writer.writerow([timestamp, mac, rssi, channel, veces, ssid])
 
                     writer.writerow([timestamp, mac, rssi, channel, veces, ssid])
                     archivo_csv.flush()
