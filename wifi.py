@@ -25,7 +25,7 @@ try:
 
     with open(ARCHIVO_RESUMEN, 'x', newline='') as f:
         writer = csv.writer(f)
-        writer.writerow(["timestamp", "mac", "rssi", "channel", "veces", "ssid", "last_seen"])
+        writer.writerow(["timestamp", "mac", "rssi", "channel", "veces", "ssid"])
 
 except FileExistsError:
     pass
@@ -41,7 +41,7 @@ if os.path.exists(ARCHIVO_RESUMEN):
             channel = int(row["channel"])
             veces = int(row["veces"])
             ssid = row["ssid"]
-            last_seen = row.get("last_seen", "")  # robusto
+            # last_seen = row.get("last_seen", "")  # robusto
 
             dispositivos_vistos[mac] = veces
 
@@ -50,7 +50,6 @@ if os.path.exists(ARCHIVO_RESUMEN):
                 "channel": channel,
                 "ssid": ssid,
                 "veces": veces,
-                "last_seen": last_seen
             }
 
 print(f"📂 Dispositivos cargados desde historial: {len(dispositivos_vistos)}")
@@ -114,12 +113,10 @@ try:
                             "rssi": rssi,
                             "channel": channel,
                             "ssid": ssid,
-                            "veces": veces,
-                            "last_seen": timestamp
+                            "veces": veces
                         }
                     else:
                         dispositivos_info[mac]["veces"] = veces
-                        dispositivos_info[mac]["last_seen"] = timestamp
 
                         # actualizar mejor señal (y canal asociado)
                         if rssi > dispositivos_info[mac]["rssi"]:
@@ -136,7 +133,7 @@ try:
 
                 with open(ARCHIVO_RESUMEN, 'w', newline='') as f:
                     writer = csv.writer(f)
-                    writer.writerow(["timestamp", "mac", "rssi", "channel", "veces", "ssid", "last_seen"])
+                    writer.writerow(["timestamp", "mac", "rssi", "channel", "veces", "ssid"])
 
                     for mac, data in dispositivos_info.items():
                         writer.writerow([
@@ -145,8 +142,7 @@ try:
                             data["rssi"],
                             data["channel"],
                             data["veces"],
-                            data["ssid"],
-                            data["last_seen"]
+                            data["ssid"]
                         ])
 
                 print("💾 Resumen actualizado")
