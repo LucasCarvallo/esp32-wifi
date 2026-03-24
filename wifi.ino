@@ -23,6 +23,7 @@ void loop() {
     // int rssi = WiFi.RSSI(i);
     // if (rssi < -85) continue; // ignorar redes lejanas
 
+    Serial.print("DATA:");
     Serial.print(WiFi.BSSIDstr(i));
     Serial.print(",");
     Serial.print(WiFi.RSSI(i));
