@@ -1,8 +1,9 @@
-# pip install pyserial
+# pip install pyserial 
 
 import serial
 import csv
 from datetime import datetime
+import os
 
 # CONFIG
 PUERTO = "COM6"
@@ -11,6 +12,7 @@ ARCHIVO = "log_dispositivos.csv"
 
 # Base de datos en memoria
 dispositivos_vistos = {}
+dispositivos_sesion = set()
 
 # Crear archivo si no existe
 try:
@@ -19,6 +21,23 @@ try:
         writer.writerow(["timestamp", "mac", "rssi", "channel", "veces", "ssid"])
 except FileExistsError:
     pass
+
+# 🔥 Cargar historial desde CSV
+if os.path.exists(ARCHIVO):
+    with open(ARCHIVO, newline='') as f:
+        reader = csv.DictReader(f)
+
+        for row in reader:
+            mac = row["mac"]
+            veces = int(row["veces"])
+
+            if mac in dispositivos_vistos:
+                if veces > dispositivos_vistos[mac]:
+                    dispositivos_vistos[mac] = veces
+            else:
+                dispositivos_vistos[mac] = veces
+
+print(f"📂 Dispositivos cargados desde historial: {len(dispositivos_vistos)}")
 
 # Conectar serial
 ser = serial.Serial(PUERTO, BAUDIOS)
@@ -42,12 +61,19 @@ try:
 
                     timestamp = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
 
-                    if mac in dispositivos_vistos:
-                        dispositivos_vistos[mac] += 1
-                    else:
-                        dispositivos_vistos[mac] = 1
-                        print(f"🚨 NUEVO DISPOSITIVO WIFI: {mac}")
+                    # 🔥 NUEVO HISTÓRICO
+                    if mac not in dispositivos_vistos:
+                        print(f"🚨 NUEVO HISTÓRICO WIFI: {mac}")
 
+                    # 🔹 NUEVO EN ESTA SESIÓN
+                    if mac not in dispositivos_sesion:
+                        print(f"🆕 NUEVO EN SESIÓN: {mac}")
+                        dispositivos_sesion.add(mac)
+
+                    # Conteo acumulado
+                    dispositivos_vistos[mac] = dispositivos_vistos.get(mac, 0) + 1
+
+                    # Alerta si es nuevo y está cerca
                     if dispositivos_vistos[mac] == 1 and rssi > -60:
                         print(f"⚠️ ALERTA: dispositivo nuevo MUY cercano: {mac}")
 
