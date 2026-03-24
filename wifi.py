@@ -93,11 +93,11 @@ try:
 
                     # 🔥 NUEVO HISTÓRICO
                     if es_nuevo_historico:
-                        print(f"🚨 NUEVO HISTÓRICO WIFI: {mac}")
+                        print(f"{timestamp} - 🚨 NUEVO HISTÓRICO WIFI: {mac}")
 
                     # Alerta si es nuevo y está cerca
                     if es_nuevo_historico and rssi > -60: # Si no estaba en el histórico y tiene buena señal, es un nuevo dispositivo cercano
-                        print(f"⚠️ ALERTA: dispositivo nuevo MUY cercano: {mac}")
+                        print(f"{timestamp} - ⚠️ ALERTA: dispositivo nuevo MUY cercano: {mac}")
 
                     # Conteo acumulado (FUENTE DE VERDAD)
                     dispositivos_vistos[mac] = dispositivos_vistos.get(mac, 0) + 1
