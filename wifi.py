@@ -86,9 +86,9 @@ try:
                         print(f"🚨 NUEVO HISTÓRICO WIFI: {mac}")
 
                     # NUEVO EN ESTA SESIÓN
-                    if mac not in dispositivos_sesion:
-                        print(f"🆕 NUEVO EN SESIÓN: {mac}")
-                        dispositivos_sesion.add(mac)
+                    # if mac not in dispositivos_sesion:
+                    #     print(f"🆕 NUEVO EN SESIÓN: {mac}")
+                    #     dispositivos_sesion.add(mac)
 
                     # Alerta si es nuevo y está cerca
                     if es_nuevo_historico and rssi > -60: # Si no estaba en el histórico y tiene buena señal, es un nuevo dispositivo cercano
