@@ -1,10 +1,9 @@
 /*
-
-Sketch uses 885764 bytes (67%) of program storage space. Maximum is 1310720 bytes.
-Global variables use 45240 bytes (13%) of dynamic memory, leaving 282440 bytes for local variables. Maximum is 327680 bytes.
-
+SIN OLED:
 Sketch uses 885956 bytes (67%) of program storage space. Maximum is 1310720 bytes.
 Global variables use 45240 bytes (13%) of dynamic memory, leaving 282440 bytes for local variables. Maximum is 327680 bytes.
+CON OLED:
+
 */
 
 #include "WiFi.h"
@@ -12,7 +11,7 @@ Global variables use 45240 bytes (13%) of dynamic memory, leaving 282440 bytes f
 void setup() {
   Serial.begin(115200);
   WiFi.mode(WIFI_STA);
-  // WiFi.mode(WIFI_OFF);
+  // WiFi.mode(WIFI_OFF); // revisar
   WiFi.disconnect();
   delay(2000);
 }
@@ -33,7 +32,7 @@ void loop() {
     // Serial.println(WiFi.SSID(i));
 
     String ssid = WiFi.SSID(i);
-    ssid = ssid.substring(0, 32); // maximo 32 caracteres
+    ssid = ssid.substring(0, 32); // maximo ssid 32 caracteres
     if (ssid == "") ssid = "HIDDEN";
     Serial.println(ssid);
   }
