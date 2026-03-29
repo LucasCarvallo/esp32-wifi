@@ -38,7 +38,6 @@ unsigned long lastPressOk = 0;
 // Prototipos de funciones
 void showMenu(int option);
 void executeOption(int option);
-void displayMessage(String message);
 
 void setup() {
   // ########## lo principal
@@ -158,11 +157,4 @@ void executeOption(int option) {
     display.println("Falta programar...");
     display.display();
   }
-}
-
-void displayMessage(String message = "") {
-  display.clearDisplay(); // limpiar pantalla
-  display.setCursor(0, 0); // resetear cursor al inicio
-  display.println(message);
-  display.display(); // mostrar
 }
