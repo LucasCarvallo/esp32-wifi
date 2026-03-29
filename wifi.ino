@@ -15,6 +15,8 @@
 
 Particion por defecto: "Default 4MB with SPIFFS (1.2MB APP/1.5MB SPIFFS)"
 Particion para mas espacio para APP: "Minimal SPIFFS (más espacio para programa)"
+Flash Chip Size: 4194304 bytes
+Free RAM: 234756 bytes
 
 ### PYTHON = 1
 Sketch uses 929288 bytes (70%) of program storage space. Maximum is 1310720 bytes.
@@ -107,6 +109,14 @@ void setup() {
   // display.display(); // mostrar
 
   // ########## lo final
+
+  // Para ver memoria del microprocesador
+  // Serial.print("Flash Chip Size: ");
+  // Serial.println(ESP.getFlashChipSize());
+  // Serial.print("Free RAM: ");
+  // Serial.println(ESP.getFreeHeap());
+  // delay(2000);
+
   showMenu(option);
   // delay(2000);
 }
