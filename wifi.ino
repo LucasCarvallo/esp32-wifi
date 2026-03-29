@@ -1,10 +1,20 @@
 /*
-# SIN OLED:
-Sketch uses 885956 bytes (67%) of program storage space. Maximum is 1310720 bytes.
-Global variables use 45240 bytes (13%) of dynamic memory, leaving 282440 bytes for local variables. Maximum is 327680 bytes.
-# CON OLED y menu de options:
-Sketch uses 929328 bytes (70%) of program storage space. Maximum is 1310720 bytes.
-Global variables use 46832 bytes (14%) of dynamic memory, leaving 280848 bytes for local variables. Maximum is 327680 bytes.
+  Proyecto: WiFi Scanner para ESP32
+  Descripción: Escanea redes WiFi cercanas y muestra información relevante.
+  Autor: Lucas
+  Fecha: Junio 2024
+
+  Funcionalidades:
+  - Escaneo de redes WiFi (SSID, BSSID, RSSI, canal)
+  - Interfaz de usuario con pantalla OLED y botones
+  - Posibilidad de agregar modo monitor (en desarrollo)
+
+  Notas:
+  - El botón "Next" alterna entre opciones del menú.
+  - El botón "OK" confirma la selección y ejecuta la acción.
+
+Sketch uses 929988 bytes (70%) of program storage space. Maximum is 1310720 bytes.
+Global variables use 46840 bytes (14%) of dynamic memory, leaving 280840 bytes for local variables. Maximum is 327680 bytes.
 */
 
 #include "WiFi.h"
@@ -39,9 +49,13 @@ void setup() {
   // WiFi.mode(WIFI_OFF); // revisar
   WiFi.disconnect();
 
+  // ########## Configurar botones con INPUT_PULLUP: Presionado = LOW, No presionado = HIGH
+  pinMode(BTN_NEXT, INPUT_PULLUP);
+  pinMode(BTN_OK, INPUT_PULLUP);
+
   // ########## display
-  // Inicializar I2C
-  Wire.begin(21, 22); // SDA, SCL(SCK)
+  // Inicializar Display Oled I2C
+  Wire.begin(21, 22); // puertos SDA, SCL(SCK)
 
   // Inicializar pantalla
   if(!display.begin(SSD1306_SWITCHCAPVCC, 0x3C)) {
@@ -51,38 +65,48 @@ void setup() {
 
   // display.clearDisplay(); // limpiar pantalla
   display.setTextSize(1); // tamaño de texto
-  display.setTextColor(WHITE); // color de tecto
+  display.setTextColor(WHITE); // color de texto
   // display.setCursor(10, 20); // posicion del cursor
   // display.println("OK"); // mensaje
   // display.display(); // mostrar
-  showMenu(option);
-
-  // Configurar botones con INPUT_PULLUP: Presionado = LOW, No presionado = HIGH
-  pinMode(BTN_NEXT, INPUT_PULLUP);
-  pinMode(BTN_OK, INPUT_PULLUP);
 
   // ########## lo final
-  delay(2000);
+  showMenu(option);
+  // delay(2000);
 }
 
 void loop() {
-  // Cambiar option
-  if (digitalRead(BTN_NEXT) == LOW && millis() - lastPressNext > 200) {
-    option = !option; // alterna 0 y 1
-    showMenu(option);
-    lastPressNext = millis();
-  }
+  if (!ejecutando) {
+    // Cambiar option
+    if (digitalRead(BTN_NEXT) == LOW && millis() - lastPressNext > 200) {
+      option = !option; // alterna 0 y 1
+      showMenu(option);
+      lastPressNext = millis();
+    }
 
-  // Confirmar option
-  if (digitalRead(BTN_OK) == LOW && millis() - lastPressOk > 200) {
-    executeOption(option);
-    lastPressOk = millis();
+    // Confirmar option
+    if (digitalRead(BTN_OK) == LOW && millis() - lastPressOk > 200) {
+      executeOption(option);
+      lastPressOk = millis();
+    }
+  }
+  else {
+    // Salir de la ejecucion actual presionando OK nuevamente
+    if (digitalRead(BTN_OK) == LOW && millis() - lastPressOk > 200) {
+      ejecutando = false;
+      showMenu(option);
+      lastPressOk = millis();
+      return;
+    }
+    else {
+      executeOption(option);
+    }
   }
 }
 
 void showMenu(int option=0) {
-  display.clearDisplay(); // limpiar pantalla
-  display.setCursor(0, 0); // resetear cursor al inicio
+  display.clearDisplay();
+  display.setCursor(0, 0);
   if (option == 0) {
     display.println("> Scan APs");
     display.println("Scan monitor");
@@ -91,12 +115,21 @@ void showMenu(int option=0) {
     display.println("Scan APs");
     display.println("> Scan Monitor");
   }
-  display.display(); // mostrar
+  display.display();
 }
 
 void executeOption(int option) {
-  displayMessage("Escaneando...");
+  // if (!ejecutando) {
+  //   ejecutando = true;
+  // }
+  ejecutando = true;
+
+  display.clearDisplay();
+  display.setCursor(0, 0);
+
   if (option == 0) { // Scan APs
+    display.println("Escaneando APs...");
+    display.display();
     int n = WiFi.scanNetworks(false, true); // incluir redes ocultas
     for (int i = 0; i < n; ++i) {
       // int rssi = WiFi.RSSI(i);
@@ -113,13 +146,17 @@ void executeOption(int option) {
       ssid = ssid.substring(0, 32); // maximo ssid 32 caracteres
       if (ssid == "") ssid = "HIDDEN";
       Serial.println(ssid);
+
+      // display.println(ssid + "," + WiFi.RSSI(i));
+      display.println(ssid);
+      display.display();
     }
     WiFi.scanDelete();
-    // delay(5000);
-    showMenu(option);
+    // delay(3000);
   }
-  else { // Test
-    displayMessage("Falta configurar");
+  else {
+    display.println("Falta programar...");
+    display.display();
   }
 }
 
@@ -129,5 +166,3 @@ void displayMessage(String message = "") {
   display.println(message);
   display.display(); // mostrar
 }
-
-
