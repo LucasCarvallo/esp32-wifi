@@ -53,7 +53,6 @@ bool scanning = false;
 // };
 // WiFiNetwork networks[50]; // Guardar hasta 50 redes
 // int networkCount = 0;
-// WiFiNetwork networks[MAX_NETWORKS];
 
 // Para guardar APs encontrados 2
 // #define MAX_NETWORKS 30
@@ -62,6 +61,8 @@ bool scanning = false;
 //   int rssi;
 //   uint8_t channel;
 // };
+// WiFiNetwork networks[MAX_NETWORKS];
+// int networkCount = 0;
 // // En el scan:
 // networkCount = min(n, MAX_NETWORKS);
 // for (int i = 0; i < networkCount; i++) {
