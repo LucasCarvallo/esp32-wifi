@@ -13,7 +13,12 @@
   - El botón "Next" alterna entre opciones del menú.
   - El botón "OK" confirma la selección y ejecuta la acción.
 
+### CON PYTHON = 1
 Sketch uses 929056 bytes (70%) of program storage space. Maximum is 1310720 bytes.
+Global variables use 46840 bytes (14%) of dynamic memory, leaving 280840 bytes for local variables. Maximum is 327680 bytes.
+
+### CON PYTHON = 0
+Sketch uses 928408 bytes (70%) of program storage space. Maximum is 1310720 bytes.
 Global variables use 46840 bytes (14%) of dynamic memory, leaving 280840 bytes for local variables. Maximum is 327680 bytes.
 */
 
@@ -28,6 +33,7 @@ Adafruit_SSD1306 display(SCREEN_WIDTH, SCREEN_HEIGHT, &Wire, -1);
 
 #define BTN_NEXT 18
 #define BTN_OK 19
+#define PYTHON 0
 
 int option = 0;
 bool ejecutando = false;
@@ -140,20 +146,23 @@ void executeOption(int option) {
     for (int i = 0; i < n; ++i) {
       // int rssi = WiFi.RSSI(i);
       // if (rssi < -85) continue; // ignorar redes lejanas
-      Serial.print("DATA:");
-      Serial.print(WiFi.BSSIDstr(i));
-      Serial.print(",");
-      Serial.print(WiFi.RSSI(i));
-      Serial.print(",");
-      Serial.print(WiFi.channel(i));
-      Serial.print(",");
-      // Serial.println(WiFi.SSID(i));
-      String ssid = WiFi.SSID(i);
-      if (ssid.length() > 22) ssid.remove(22); // maximo ssid X caracteres (en el display entran 21-22 (Claro-Fibra-2.4G-3523)
-      if (ssid == "") ssid = "HIDDEN";
-      Serial.println(ssid);
+      #if PYTHON
+        Serial.print("DATA:");
+        Serial.print(WiFi.BSSIDstr(i));
+        Serial.print(",");
+        Serial.print(WiFi.RSSI(i));
+        Serial.print(",");
+        Serial.print(WiFi.channel(i));
+        Serial.print(",");
+        // Serial.println(WiFi.SSID(i));
+        String ssid = WiFi.SSID(i);
+        if (ssid.length() > 22) ssid.remove(22); // maximo ssid X caracteres (en el display entran 21-22 (Claro-Fibra-2.4G-3523)
+        if (ssid == "") ssid = "HIDDEN";
+        Serial.println(ssid);
+      #endif
 
-      display.println(ssid);
+      display.println(WiFi.SSID(i));
+      // display.println((WiFi.SSID(i)).remove(22));
     }
     WiFi.scanDelete();
     // delay(5000);
