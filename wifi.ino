@@ -140,7 +140,7 @@ void loop() {
             Serial.println(ssid);
           #endif
 
-          if (ssid.length() > 22) ssid.remove(22);
+          if (ssid.length() > 22) ssid.remove(22); // maximo ssid X caracteres (en el display entran 21-22 (Claro-Fibra-2.4G-3523)
           display.println(ssid);
         }
         display.display();
@@ -172,35 +172,12 @@ void executeOption(int option) {
   display.setCursor(0, 0);
 
   if (option == 0) { // Scan APs
-    WiFi.scanNetworks(true, true); // async
+    WiFi.scanNetworks(true, true); // primer parametro: async, segundo parametro: redes ocultas
     scanning = true;
     display.clearDisplay();
     display.setCursor(0, 0);
     display.println("Escaneando...");
     display.display();
-
-    // int n = WiFi.scanNetworks(false, true); // incluir redes ocultas
-    // for (int i = 0; i < n; ++i) {
-    //   // int rssi = WiFi.RSSI(i);
-    //   // if (rssi < -85) continue; // ignorar redes lejanas
-    //   #if PYTHON
-    //     Serial.print("DATA:");
-    //     Serial.print(WiFi.BSSIDstr(i));
-    //     Serial.print(",");
-    //     Serial.print(WiFi.RSSI(i));
-    //     Serial.print(",");
-    //     Serial.print(WiFi.channel(i));
-    //     Serial.print(",");
-    //     // Serial.println(WiFi.SSID(i));
-    //     String ssid = WiFi.SSID(i);
-    //     if (ssid.length() > 22) ssid.remove(22); // maximo ssid X caracteres (en el display entran 21-22 (Claro-Fibra-2.4G-3523)
-    //     if (ssid == "") ssid = "HIDDEN";
-    //     Serial.println(ssid);
-    //   #endif
-    //   display.println(WiFi.SSID(i));
-    // }
-    // WiFi.scanDelete();
-    // // delay(5000);
   }
   else {
     display.println("Falta programar...");
