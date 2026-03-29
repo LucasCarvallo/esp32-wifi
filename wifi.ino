@@ -13,7 +13,7 @@
   - El botón "Next" alterna entre opciones del menú.
   - El botón "OK" confirma la selección y ejecuta la acción.
 
-Sketch uses 929264 bytes (70%) of program storage space. Maximum is 1310720 bytes.
+Sketch uses 929056 bytes (70%) of program storage space. Maximum is 1310720 bytes.
 Global variables use 46840 bytes (14%) of dynamic memory, leaving 280840 bytes for local variables. Maximum is 327680 bytes.
 */
 
@@ -149,7 +149,7 @@ void executeOption(int option) {
       Serial.print(",");
       // Serial.println(WiFi.SSID(i));
       String ssid = WiFi.SSID(i);
-      ssid = ssid.substring(0, 22); // maximo ssid 32 caracteres (en el display entran 21-22 (Claro-Fibra-2.4G-3523)
+      if (ssid.length() > 22) ssid.remove(22); // maximo ssid X caracteres (en el display entran 21-22 (Claro-Fibra-2.4G-3523)
       if (ssid == "") ssid = "HIDDEN";
       Serial.println(ssid);
 
