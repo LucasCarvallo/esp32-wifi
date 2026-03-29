@@ -139,10 +139,12 @@ void executeOption(int option) {
   display.setCursor(0, 0);
 
   if (option == 0) { // Scan APs
-    // int n = WiFi.scanNetworks(true); // modo asincronico, no bloqueante
-    // if (WiFi.scanComplete() >= 0) {
-    //   int n = WiFi.scanComplete();
-    // }
+    // WiFi.scanNetworks(true, true); // async
+    // scanning = true;
+    // display.clearDisplay();
+    // display.setCursor(0, 0);
+    // display.println("Escaneando...");
+    // display.display();
 
     int n = WiFi.scanNetworks(false, true); // incluir redes ocultas
     for (int i = 0; i < n; ++i) {
@@ -162,7 +164,6 @@ void executeOption(int option) {
         if (ssid == "") ssid = "HIDDEN";
         Serial.println(ssid);
       #endif
-
       display.println(WiFi.SSID(i));
     }
     WiFi.scanDelete();
