@@ -149,7 +149,7 @@ void executeOption(int option) {
       Serial.print(",");
       // Serial.println(WiFi.SSID(i));
       String ssid = WiFi.SSID(i);
-      ssid = ssid.substring(0, 32); // maximo ssid 32 caracteres
+      ssid = ssid.substring(0, 22); // maximo ssid 32 caracteres (en el display entran 21-22 (Claro-Fibra-2.4G-3523)
       if (ssid == "") ssid = "HIDDEN";
       Serial.println(ssid);
 
