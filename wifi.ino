@@ -13,7 +13,7 @@
   - El botón "Next" alterna entre opciones del menú.
   - El botón "OK" confirma la selección y ejecuta la acción.
 
-Sketch uses 929988 bytes (70%) of program storage space. Maximum is 1310720 bytes.
+Sketch uses 929264 bytes (70%) of program storage space. Maximum is 1310720 bytes.
 Global variables use 46840 bytes (14%) of dynamic memory, leaving 280840 bytes for local variables. Maximum is 327680 bytes.
 */
 
@@ -97,9 +97,6 @@ void loop() {
       lastPressOk = millis();
       return;
     }
-    else {
-      executeOption(option);
-    }
   }
 }
 
@@ -118,17 +115,17 @@ void showMenu(int option=0) {
 }
 
 void executeOption(int option) {
-  // if (!ejecutando) {
-  //   ejecutando = true;
-  // }
   ejecutando = true;
 
   display.clearDisplay();
   display.setCursor(0, 0);
 
   if (option == 0) { // Scan APs
-    display.println("Escaneando APs...");
-    display.display();
+    // int n = WiFi.scanNetworks(true); // modo asincronico, no bloqueante
+    // if (WiFi.scanComplete() >= 0) {
+    //   int n = WiFi.scanComplete();
+    // }
+
     int n = WiFi.scanNetworks(false, true); // incluir redes ocultas
     for (int i = 0; i < n; ++i) {
       // int rssi = WiFi.RSSI(i);
@@ -146,15 +143,22 @@ void executeOption(int option) {
       if (ssid == "") ssid = "HIDDEN";
       Serial.println(ssid);
 
-      // display.println(ssid + "," + WiFi.RSSI(i));
       display.println(ssid);
-      display.display();
     }
     WiFi.scanDelete();
-    // delay(3000);
+    // delay(5000);
   }
   else {
     display.println("Falta programar...");
-    display.display();
   }
+  display.display();
 }
+
+// Función para guardar APs encontrados (opcional pero útil)
+// struct WiFiNetwork {
+//     String ssid;
+//     int rssi;
+//     int channel;
+// };
+// WiFiNetwork networks[50]; // Guardar hasta 50 redes
+// int networkCount = 0;
