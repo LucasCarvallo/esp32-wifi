@@ -16,6 +16,11 @@
 Particion por defecto: "Default 4MB with SPIFFS (1.2MB APP/1.5MB SPIFFS)"
 Particion para mas espacio para APP: "Minimal SPIFFS (más espacio para programa)"
 
+### PYTHON = 1
+Sketch uses 929288 bytes (70%) of program storage space. Maximum is 1310720 bytes.
+Global variables use 46840 bytes (14%) of dynamic memory, leaving 280840 bytes for local variables. Maximum is 327680 bytes.
+
+### PYTHON = 0
 Sketch uses 928952 bytes (70%) of program storage space. Maximum is 1310720 bytes.
 Global variables use 46840 bytes (14%) of dynamic memory, leaving 280840 bytes for local variables. Maximum is 327680 bytes.
 */
