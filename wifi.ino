@@ -13,6 +13,9 @@
   - El botón "Next" alterna entre opciones del menú.
   - El botón "OK" confirma la selección y ejecuta la acción.
 
+Particion por defecto: "Default 4MB with SPIFFS (1.2MB APP/1.5MB SPIFFS)"
+Particion para mas espacio para APP: "Minimal SPIFFS (más espacio para programa)"
+
 ### CON PYTHON = 1
 Sketch uses 929056 bytes (70%) of program storage space. Maximum is 1310720 bytes.
 Global variables use 46840 bytes (14%) of dynamic memory, leaving 280840 bytes for local variables. Maximum is 327680 bytes.
@@ -92,7 +95,6 @@ void setup() {
 void loop() {
   if (!ejecutando) {
     // Cambiar option
-    // if (isPressed(btnNext)) {
     if (digitalRead(BTN_NEXT) == LOW && millis() - lastPressNext > 200) {
       option = !option;
       showMenu(option);
