@@ -24,21 +24,30 @@ Global variables use 46840 bytes (14%) of dynamic memory, leaving 280840 bytes f
 
 #define SCREEN_WIDTH 128
 #define SCREEN_HEIGHT 64
+Adafruit_SSD1306 display(SCREEN_WIDTH, SCREEN_HEIGHT, &Wire, -1);
 
 #define BTN_NEXT 18
 #define BTN_OK 19
-
-Adafruit_SSD1306 display(SCREEN_WIDTH, SCREEN_HEIGHT, &Wire, -1);
 
 int option = 0;
 bool ejecutando = false;
 unsigned long lastPressNext = 0;
 unsigned long lastPressOk = 0;
 
+// Función para guardar APs encontrados (opcional pero útil)
+// struct WiFiNetwork {
+//     String ssid;
+//     int rssi;
+//     int channel;
+// };
+// WiFiNetwork networks[50]; // Guardar hasta 50 redes
+// int networkCount = 0;
+
 // Prototipos de funciones
 void showMenu(int option);
 void executeOption(int option);
 
+// ##################################################################
 void setup() {
   // ########## lo principal
   Serial.begin(115200);
@@ -77,8 +86,9 @@ void setup() {
 void loop() {
   if (!ejecutando) {
     // Cambiar option
+    // if (isPressed(btnNext)) {
     if (digitalRead(BTN_NEXT) == LOW && millis() - lastPressNext > 200) {
-      option = !option; // alterna 0 y 1
+      option = !option;
       showMenu(option);
       lastPressNext = millis();
     }
@@ -153,12 +163,3 @@ void executeOption(int option) {
   }
   display.display();
 }
-
-// Función para guardar APs encontrados (opcional pero útil)
-// struct WiFiNetwork {
-//     String ssid;
-//     int rssi;
-//     int channel;
-// };
-// WiFiNetwork networks[50]; // Guardar hasta 50 redes
-// int networkCount = 0;
