@@ -21,8 +21,9 @@ Sketch uses 929288 bytes (70%) of program storage space. Maximum is 1310720 byte
 Global variables use 46840 bytes (14%) of dynamic memory, leaving 280840 bytes for local variables. Maximum is 327680 bytes.
 
 ### PYTHON = 0
-Sketch uses 928952 bytes (70%) of program storage space. Maximum is 1310720 bytes.
+Sketch uses 928804 bytes (70%) of program storage space. Maximum is 1310720 bytes.
 Global variables use 46840 bytes (14%) of dynamic memory, leaving 280840 bytes for local variables. Maximum is 327680 bytes.
+
 */
 
 #include "WiFi.h"
@@ -140,7 +141,7 @@ void loop() {
             Serial.println(ssid);
           #endif
 
-          if (ssid.length() > 22) ssid.remove(22); // maximo ssid X caracteres (en el display entran 21-22 (Claro-Fibra-2.4G-3523)
+          // if (ssid.length() > 22) ssid.remove(22); // maximo ssid X caracteres (en el display entran 21-22 (Claro-Fibra-2.4G-3523)
           display.println(ssid);
         }
         display.display();
