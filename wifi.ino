@@ -16,21 +16,8 @@
 Particion por defecto: "Default 4MB with SPIFFS (1.2MB APP/1.5MB SPIFFS)"
 Particion para mas espacio para APP: "Minimal SPIFFS (más espacio para programa)"
 
-### CON PYTHON = 1
-Sketch uses 929056 bytes (70%) of program storage space. Maximum is 1310720 bytes.
+Sketch uses 928952 bytes (70%) of program storage space. Maximum is 1310720 bytes.
 Global variables use 46840 bytes (14%) of dynamic memory, leaving 280840 bytes for local variables. Maximum is 327680 bytes.
-
-### CON PYTHON = 0
-Sketch uses 928408 bytes (70%) of program storage space. Maximum is 1310720 bytes.
-Global variables use 46840 bytes (14%) of dynamic memory, leaving 280840 bytes for local variables. Maximum is 327680 bytes.
-
-#### PRUEBAS
-Sketch uses 928948 bytes (70%) of program storage space. Maximum is 1310720 bytes.
-Global variables use 46840 bytes (14%) of dynamic memory, leaving 280840 bytes for local variables. Maximum is 327680 bytes.
-
-Sketch uses 928640 bytes (70%) of program storage space. Maximum is 1310720 bytes.
-Global variables use 46840 bytes (14%) of dynamic memory, leaving 280840 bytes for local variables. Maximum is 327680 bytes.
-
 */
 
 #include "WiFi.h"
@@ -134,9 +121,8 @@ void loop() {
           // int rssi = WiFi.RSSI(i);
           // if (rssi < -85) continue; // ignorar redes lejanas
 
-          // String ssid = WiFi.SSID(i);
-          // if (ssid == "") ssid = "HIDDEN";
-          // if (ssid.length() > 22) ssid.remove(22);
+          String ssid = WiFi.SSID(i);
+          if (ssid == "") ssid = "HIDDEN";
 
           #if PYTHON
             Serial.print("DATA:");
@@ -146,12 +132,11 @@ void loop() {
             Serial.print(",");
             Serial.print(WiFi.channel(i));
             Serial.print(",");
-            Serial.println(WiFi.SSID(i));
-            // Serial.println(ssid);
+            Serial.println(ssid);
           #endif
-          // display.println(ssid);
-          // display.println(WiFi.BSSIDstr(i));
-          display.println(WiFi.SSID(i));
+
+          if (ssid.length() > 22) ssid.remove(22);
+          display.println(ssid);
         }
         display.display();
         WiFi.scanDelete();
