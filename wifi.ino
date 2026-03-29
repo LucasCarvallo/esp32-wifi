@@ -23,6 +23,14 @@ Global variables use 46840 bytes (14%) of dynamic memory, leaving 280840 bytes f
 ### CON PYTHON = 0
 Sketch uses 928408 bytes (70%) of program storage space. Maximum is 1310720 bytes.
 Global variables use 46840 bytes (14%) of dynamic memory, leaving 280840 bytes for local variables. Maximum is 327680 bytes.
+
+#### PRUEBAS
+Sketch uses 928948 bytes (70%) of program storage space. Maximum is 1310720 bytes.
+Global variables use 46840 bytes (14%) of dynamic memory, leaving 280840 bytes for local variables. Maximum is 327680 bytes.
+
+Sketch uses 928640 bytes (70%) of program storage space. Maximum is 1310720 bytes.
+Global variables use 46840 bytes (14%) of dynamic memory, leaving 280840 bytes for local variables. Maximum is 327680 bytes.
+
 */
 
 #include "WiFi.h"
@@ -42,6 +50,7 @@ int option = 0;
 bool ejecutando = false;
 unsigned long lastPressNext = 0;
 unsigned long lastPressOk = 0;
+bool scanning = false;
 
 // Función para guardar APs encontrados (opcional pero útil)
 // struct WiFiNetwork {
@@ -115,6 +124,40 @@ void loop() {
       lastPressOk = millis();
       return;
     }
+
+    if (ejecutando && option == 0 && scanning) {
+      int n = WiFi.scanComplete();
+      if (n >= 0) {
+        display.clearDisplay();
+        display.setCursor(0, 0);
+        for (int i = 0; i < n; ++i) {
+          // int rssi = WiFi.RSSI(i);
+          // if (rssi < -85) continue; // ignorar redes lejanas
+
+          // String ssid = WiFi.SSID(i);
+          // if (ssid == "") ssid = "HIDDEN";
+          // if (ssid.length() > 22) ssid.remove(22);
+
+          #if PYTHON
+            Serial.print("DATA:");
+            Serial.print(WiFi.BSSIDstr(i));
+            Serial.print(",");
+            Serial.print(WiFi.RSSI(i));
+            Serial.print(",");
+            Serial.print(WiFi.channel(i));
+            Serial.print(",");
+            Serial.println(WiFi.SSID(i));
+            // Serial.println(ssid);
+          #endif
+          // display.println(ssid);
+          // display.println(WiFi.BSSIDstr(i));
+          display.println(WiFi.SSID(i));
+        }
+        display.display();
+        WiFi.scanDelete();
+        WiFi.scanNetworks(true, true);
+      }
+    }
   }
 }
 
@@ -139,35 +182,35 @@ void executeOption(int option) {
   display.setCursor(0, 0);
 
   if (option == 0) { // Scan APs
-    // WiFi.scanNetworks(true, true); // async
-    // scanning = true;
-    // display.clearDisplay();
-    // display.setCursor(0, 0);
-    // display.println("Escaneando...");
-    // display.display();
+    WiFi.scanNetworks(true, true); // async
+    scanning = true;
+    display.clearDisplay();
+    display.setCursor(0, 0);
+    display.println("Escaneando...");
+    display.display();
 
-    int n = WiFi.scanNetworks(false, true); // incluir redes ocultas
-    for (int i = 0; i < n; ++i) {
-      // int rssi = WiFi.RSSI(i);
-      // if (rssi < -85) continue; // ignorar redes lejanas
-      #if PYTHON
-        Serial.print("DATA:");
-        Serial.print(WiFi.BSSIDstr(i));
-        Serial.print(",");
-        Serial.print(WiFi.RSSI(i));
-        Serial.print(",");
-        Serial.print(WiFi.channel(i));
-        Serial.print(",");
-        // Serial.println(WiFi.SSID(i));
-        String ssid = WiFi.SSID(i);
-        if (ssid.length() > 22) ssid.remove(22); // maximo ssid X caracteres (en el display entran 21-22 (Claro-Fibra-2.4G-3523)
-        if (ssid == "") ssid = "HIDDEN";
-        Serial.println(ssid);
-      #endif
-      display.println(WiFi.SSID(i));
-    }
-    WiFi.scanDelete();
-    // delay(5000);
+    // int n = WiFi.scanNetworks(false, true); // incluir redes ocultas
+    // for (int i = 0; i < n; ++i) {
+    //   // int rssi = WiFi.RSSI(i);
+    //   // if (rssi < -85) continue; // ignorar redes lejanas
+    //   #if PYTHON
+    //     Serial.print("DATA:");
+    //     Serial.print(WiFi.BSSIDstr(i));
+    //     Serial.print(",");
+    //     Serial.print(WiFi.RSSI(i));
+    //     Serial.print(",");
+    //     Serial.print(WiFi.channel(i));
+    //     Serial.print(",");
+    //     // Serial.println(WiFi.SSID(i));
+    //     String ssid = WiFi.SSID(i);
+    //     if (ssid.length() > 22) ssid.remove(22); // maximo ssid X caracteres (en el display entran 21-22 (Claro-Fibra-2.4G-3523)
+    //     if (ssid == "") ssid = "HIDDEN";
+    //     Serial.println(ssid);
+    //   #endif
+    //   display.println(WiFi.SSID(i));
+    // }
+    // WiFi.scanDelete();
+    // // delay(5000);
   }
   else {
     display.println("Falta programar...");
