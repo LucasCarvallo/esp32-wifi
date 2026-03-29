@@ -162,7 +162,6 @@ void executeOption(int option) {
       #endif
 
       display.println(WiFi.SSID(i));
-      // display.println((WiFi.SSID(i)).remove(22));
     }
     WiFi.scanDelete();
     // delay(5000);
