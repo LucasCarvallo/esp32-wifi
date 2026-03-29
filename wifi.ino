@@ -45,7 +45,7 @@ unsigned long lastPressNext = 0;
 unsigned long lastPressOk = 0;
 bool scanning = false;
 
-// Función para guardar APs encontrados (opcional pero útil)
+// Para guardar APs encontrados 1
 // struct WiFiNetwork {
 //     String ssid;
 //     int rssi;
@@ -53,6 +53,24 @@ bool scanning = false;
 // };
 // WiFiNetwork networks[50]; // Guardar hasta 50 redes
 // int networkCount = 0;
+
+// Para guardar APs encontrados 2
+// #define MAX_NETWORKS 30
+// struct WiFiNetwork {
+//   String ssid;
+//   int rssi;
+//   uint8_t channel;
+// };
+// // En el scan:
+// networkCount = min(n, MAX_NETWORKS);
+// for (int i = 0; i < networkCount; i++) {
+//   networks[i].ssid = WiFi.SSID(i);
+//   networks[i].rssi = WiFi.RSSI(i);
+//   networks[i].channel = WiFi.channel(i);
+// }
+
+WiFiNetwork networks[MAX_NETWORKS];
+int networkCount = 0;
 
 // Prototipos de funciones
 void showMenu(int option);
