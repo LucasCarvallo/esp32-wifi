@@ -23,7 +23,7 @@ Sketch uses 929288 bytes (70%) of program storage space. Maximum is 1310720 byte
 Global variables use 46840 bytes (14%) of dynamic memory, leaving 280840 bytes for local variables. Maximum is 327680 bytes.
 
 ### PYTHON = 0
-Sketch uses 928804 bytes (70%) of program storage space. Maximum is 1310720 bytes.
+Sketch uses 928792 bytes (70%) of program storage space. Maximum is 1310720 bytes.
 Global variables use 46840 bytes (14%) of dynamic memory, leaving 280840 bytes for local variables. Maximum is 327680 bytes.
 
 */
@@ -195,9 +195,6 @@ void showMenu(int option=0) {
 
 void executeOption(int option) {
   ejecutando = true;
-
-  display.clearDisplay();
-  display.setCursor(0, 0);
 
   if (option == 0) { // Scan APs
     WiFi.scanNetworks(true, true); // primer parametro: async, segundo parametro: redes ocultas
